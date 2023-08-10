@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        "prime-orange": "#FC4747",
+        "prime-black": "#10141E",
+        "prime-gray": "#5A698F",
+        "prime-dark": "#161D2F",
+      },
       screens: {
         xs: "400px",
         sm: "600px",
