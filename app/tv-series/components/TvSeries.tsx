@@ -1,38 +1,26 @@
 "use client";
-import FetchData from "@/app/components/FetchData";
 import React, { useEffect, useState } from "react";
 import Card from "@/app/components/Card";
 import Search from "@/app/components/Search";
+import SearchFilter from "@/app/components/fetch & filters/SearchFiter";
+import useFetchFilter from "@/app/components/fetch & filters/useFetchFilter";
 
 type Props = {};
 
 const TvSeries = (props: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [series, setSeries] = useState([]);
 
-  useEffect(() => {
-    const movieUrl = "http://localhost:3001/data";
-    const fetchSeries = async () => {
-      const allData = await FetchData(movieUrl);
-      const seriesData = allData.filter(
-        (item: any) => item.category === "TV Series"
-      );
-      setSeries(seriesData);
-    };
-
-    fetchSeries();
-  }, []);
-  console.log(series);
+  const filterCategory = (item: any) => item.category === "TV Series";
+  const series = useFetchFilter({ filterData: filterCategory });
 
   const handleSearch = (searchResult: any) => {
     setSearchQuery(searchResult);
   };
 
-  const filteredSearch = series.filter(
-    (movie: any) =>
-      !searchQuery ||
-      movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredSearch = SearchFilter({
+    filterData: series,
+    searchQuery: searchQuery,
+  });
 
   return (
     <>
