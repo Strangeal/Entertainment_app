@@ -1,7 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import FetchData from "./FetchData";
-
 type SearchProps = {
   searchText: string;
   onSearch: any;
