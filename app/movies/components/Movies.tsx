@@ -34,10 +34,14 @@ const Movies = () => {
   return (
     <>
       <Search searchText="Movies" onSearch={handleSearch} />
-      <h2 className="text-3xl font-light my-5">Movies</h2>
-      {filteredSearch.length === 0 ? (
-        <h2 className="text-3xl font-light my-5">No movies found</h2>
-      ) : (
+      <h2 className="text-3xl font-light my-5">
+        {filteredSearch.length === 0
+          ? "No movies found"
+          : filteredSearch.length === movies.length
+          ? "Movies"
+          : `Found ${filteredSearch.length} results for '${searchQuery}'`}
+      </h2>
+      {filteredSearch.length === 0 ? null : (
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredSearch.map((movie: any) => (
             <Card key={movie.id} movie={movie} searchQuery={searchQuery} />
