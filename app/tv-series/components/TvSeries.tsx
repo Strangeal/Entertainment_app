@@ -39,9 +39,9 @@ const TvSeries = (props: Props) => {
       <Search searchText="Tv-series" onSearch={handleSearch} />
       <h2 className="text-3xl font-light my-5">
         {filteredSearch.length === 0
-          ? "No results found"
+          ? "No series found"
           : filteredSearch.length === series.length
-          ? "Movies"
+          ? "TV Series"
           : `Found ${filteredSearch.length} results for '${searchQuery}'`}
       </h2>
       {filteredSearch.length === 0 ? null : (
