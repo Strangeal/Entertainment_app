@@ -1,36 +1,25 @@
 "use client";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import FetchData from "@/app/components/FetchData";
+import React, { useState } from "react";
 import Card from "@/app/components/Card";
 import Search from "@/app/components/Search";
+import SearchFilter from "@/app/components/fetch & filters/SearchFiter";
+import useFetchFilter from "@/app/components/fetch & filters/useFetchFilter";
 
 const Movies = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    const movieUrl = "http://localhost:3001/data";
-    const fetchMovies = async () => {
-      const allData = await FetchData(movieUrl);
-      const movieData = allData.filter(
-        (item: any) => item.category === "Movie"
-      );
-      console.log(movieData);
-      setMovies(movieData);
-    };
-    fetchMovies();
-  }, []);
+  const filterCategory = (item: any) => item.category === "Movie";
+  const movies = useFetchFilter({ filterData: filterCategory });
 
   const handleSearch = (searchResult: any) => {
     setSearchQuery(searchResult);
   };
 
-  const filteredSearch = movies.filter(
-    (movie: any) =>
-      !searchQuery ||
-      movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredSearch = SearchFilter({
+    filterData: movies,
+    searchQuery: searchQuery,
+  });
+
   return (
     <>
       <Search searchText="Movies" onSearch={handleSearch} />
