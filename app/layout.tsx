@@ -18,10 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="bg-prime-dark fixed top-0 w-full sm:max-w-[95vw] sm:m-5 sm:rounded-lg md:w-fit md:h-[95vh]">
+        <header className="bg-prime-dark fixed top-0 z-50 w-full sm:max-w-[95vw] sm:m-5 sm:rounded-lg lg:w-fit lg:h-[95vh]">
           <Navbar />
         </header>
-        <main className="mt-20 mx-5 md:mt-10 md:ml-28">{children}</main>
+        <main className="mt-20 sm:mt-28 mx-5 lg:mt-10 lg:ml-32">
+          {children}
+        </main>
       </body>
     </html>
   );
