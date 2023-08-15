@@ -1,8 +1,6 @@
 "use client";
 import FetchData from "@/app/components/FetchData";
 import React, { useEffect, useState } from "react";
-import SeriesCard from "../page";
-import axios from "axios";
 import Card from "@/app/components/Card";
 import Search from "@/app/components/Search";
 
@@ -35,13 +33,18 @@ const TvSeries = (props: Props) => {
       !searchQuery ||
       movie.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
   return (
     <>
       <Search searchText="Tv-series" onSearch={handleSearch} />
-      <h2 className="text-3xl font-light my-5">TV Series</h2>
-      {filteredSearch.length === 0 ? (
-        <h2 className="text-3xl font-light my-5">No series found</h2>
-      ) : (
+      <h2 className="text-3xl font-light my-5">
+        {filteredSearch.length === 0
+          ? "No results found"
+          : filteredSearch.length === series.length
+          ? "Movies"
+          : `Found ${filteredSearch.length} results for '${searchQuery}'`}
+      </h2>
+      {filteredSearch.length === 0 ? null : (
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
           {series &&
             series.map((series: any) => (
