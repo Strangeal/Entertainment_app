@@ -1,12 +1,22 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import FetchData from "./FetchData";
 
 type SearchProps = {
   searchText: string;
+  onSearch: any;
 };
 
-const Search = ({ searchText }: SearchProps) => {
+const Search = ({ searchText, onSearch }: SearchProps) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleInputChange = (e: any) => {
+    const search = e.target.value;
+    setSearchQuery(search);
+    onSearch(search);
+  };
   return (
-    <form>
+    <form className="">
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only"
@@ -14,9 +24,9 @@ const Search = ({ searchText }: SearchProps) => {
         Search
       </label>
       <div className="relative">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
           <svg
-            className="w-4 h-4 text-white"
+            className="w-4 h-4 sm:w-5 sm:h-5 text-white"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -33,7 +43,9 @@ const Search = ({ searchText }: SearchProps) => {
         </div>
         <input
           type="search"
-          className="block w-full p-4 pl-10 text-white text-sm bg-transparent focus:border-b focus:ring-prime-dark focus:border-prime-gray outline-none"
+          value={searchQuery}
+          onChange={handleInputChange}
+          className="block w-full p-4 pl-8 text-white font-light text-sm bg-transparent focus:border-b focus:ring-prime-dark focus:border-prime-gray outline-none"
           placeholder={`Search for ${searchText}`}
           required
         />
