@@ -1,23 +1,12 @@
-import React, { useEffect, useState } from "react";
-import FetchData from "../FetchData";
 import TrendingCard from "./TrendingCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
+import useFetchFilter from "../fetch & filters/useFetchFilter";
 
 const Trending = () => {
-  const [trending, setTrending] = useState([]);
-  useEffect(() => {
-    const fetchTrending = async () => {
-      const allData = await FetchData("http://localhost:3001/data");
-      const trendingMovies = allData.filter(
-        (item: any) => item.isTrending === true
-      );
-      setTrending(trendingMovies);
-    };
-
-    fetchTrending();
-  }, []);
+  const filterTrending = (item: any) => item.isTrending === true;
+  const trending = useFetchFilter({ filterData: filterTrending });
 
   return (
     <>
