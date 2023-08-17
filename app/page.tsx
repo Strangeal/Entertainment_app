@@ -27,20 +27,22 @@ export default function Home() {
     searchQuery: searchQuery,
   });
 
+  const newFilteredSearch = filteredSearch.sort(() => Math.random() - 0.5);
+
   return (
     <>
       <Search searchText="Movies or TV Series" onSearch={handleSearch} />
       <Trending />
       <h2 className="text-3xl font-light my-5">
-        {filteredSearch.length === 0
+        {newFilteredSearch.length === 0
           ? "No movies found"
-          : filteredSearch.length === allMovies.length
+          : newFilteredSearch.length === allMovies.length
           ? "Recommended for you"
-          : `Found ${filteredSearch.length} results for '${searchQuery}'`}
+          : `Found ${newFilteredSearch.length} results for '${searchQuery}'`}
       </h2>
-      {filteredSearch.length === 0 ? null : (
+      {newFilteredSearch.length === 0 ? null : (
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8">
-          {filteredSearch.slice(0, 12).map((movie: any) => (
+          {newFilteredSearch.slice(0, 12).map((movie: any) => (
             <Card key={movie.id} movie={movie} searchQuery={searchQuery} />
           ))}
         </div>
