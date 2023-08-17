@@ -1,26 +1,31 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { usePathname } from "next/navigation";
 
-type Props = {};
+const Navbar = () => {
+  const pathname = usePathname();
+  console.log(pathname);
 
-const Navbar = (props: Props) => {
   return (
-    <nav className="flex items-center justify-between gap-5 p-4 md:flex-col">
+    <nav className="flex items-center justify-between gap-5 p-5 sm:gap-7 sm:p-7 lg:flex-col">
       <Link href="/">
         <Image src="/assets/logo.svg" width={20} height={20} alt="home" />
       </Link>
 
       {/* <div> */}
-      <ul className="flex items-center gap-5 md:flex-col">
+      <ul className="flex items-center gap-5 sm:gap-7 lg:flex-col">
         <li>
           <Link href="/">
             <svg
-              className="active:text-white active:fill-current hover:fill-current hover:text-white"
+              className={`
+                ${pathname == "/" ? "text-white fill-current" : "text-red-600"}
+                hover:text-red-600 hover:fill-current`}
               width="20"
               height="20"
-              fill="#5A698F"
               xmlns="http://www.w3.org/2000/svg"
+              fill="#5A698F"
             >
               <path d="M8 0H1C.4 0 0 .4 0 1v7c0 .6.4 1 1 1h7c.6 0 1-.4 1-1V1c0-.6-.4-1-1-1Zm0 11H1c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h7c.6 0 1-.4 1-1v-7c0-.6-.4-1-1-1ZM19 0h-7c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h7c.6 0 1-.4 1-1V1c0-.6-.4-1-1-1Zm0 11h-7c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h7c.6 0 1-.4 1-1v-7c0-.6-.4-1-1-1Z" />
             </svg>
@@ -29,7 +34,13 @@ const Navbar = (props: Props) => {
         <li>
           <Link href="/movies">
             <svg
-              className="hover:text-white hover:fill-current"
+              className={`
+              ${
+                pathname == "/movies"
+                  ? "text-white fill-current"
+                  : "text-red-600"
+              }
+              hover:text-red-600 hover:fill-current`}
               width="20"
               height="20"
               fill="#5A698F"
@@ -42,7 +53,13 @@ const Navbar = (props: Props) => {
         <li>
           <Link href="/tv-series">
             <svg
-              className="hover:text-white hover:fill-current"
+              className={`
+              ${
+                pathname == "/tv-series"
+                  ? "text-white fill-current"
+                  : "text-red-600"
+              }
+              hover:text-red-600 hover:fill-current`}
               width="20"
               height="20"
               fill="#5A698F"
@@ -55,7 +72,13 @@ const Navbar = (props: Props) => {
         <li>
           <Link href="/bookmarks">
             <svg
-              className="hover:text-white hover:fill-current"
+              className={`
+              ${
+                pathname == "/bookmarks"
+                  ? "text-white fill-current"
+                  : "text-red-600"
+              }
+              hover:text-red-600 hover:fill-current`}
               width="17"
               height="20"
               fill="#5A698F"
