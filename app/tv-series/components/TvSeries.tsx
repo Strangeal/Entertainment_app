@@ -4,14 +4,16 @@ import Card from "@/app/components/Card";
 import Search from "@/app/components/Search";
 import SearchFilter from "@/app/components/fetch & filters/SearchFiter";
 import useFetchFilter from "@/app/components/fetch & filters/useFetchFilter";
+import Spinner from "@/app/components/Spinner";
 
 type Props = {};
 
 const TvSeries = (props: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const filterCategory = (item: any) => item.category === "TV Series";
-  const series = useFetchFilter({ filterData: filterCategory });
+  const series = useFetchFilter({ filterData: filterCategory, setIsLoading });
 
   const handleSearch = (searchResult: any) => {
     setSearchQuery(searchResult);
@@ -25,20 +27,28 @@ const TvSeries = (props: Props) => {
   return (
     <>
       <Search searchText="Tv-series" onSearch={handleSearch} />
-      <h2 className="text-3xl font-light my-5">
-        {filteredSearch.length === 0
-          ? "No series found"
-          : filteredSearch.length === series.length
-          ? "TV Series"
-          : `Found ${filteredSearch.length} results for '${searchQuery}'`}
-      </h2>
-      {filteredSearch.length === 0 ? null : (
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
-          {series &&
-            series.map((series: any) => (
-              <Card key={series.id} movie={series} searchQuery={searchQuery} />
-            ))}
-        </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <h2 className="text-3xl font-light my-5">
+            {filteredSearch.length === series.length
+              ? "TV Series"
+              : `Found ${filteredSearch.length} results for '${searchQuery}'`}
+          </h2>
+          {filteredSearch.length === 0 ? null : (
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
+              {series &&
+                series.map((series: any) => (
+                  <Card
+                    key={series.id}
+                    movie={series}
+                    searchQuery={searchQuery}
+                  />
+                ))}
+            </div>
+          )}
+        </>
       )}
     </>
   );

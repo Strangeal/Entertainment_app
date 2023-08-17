@@ -3,10 +3,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import useFetchFilter from "../fetch & filters/useFetchFilter";
+import { useState } from "react";
+import Spinner from "../Spinner";
 
 const Trending = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const filterTrending = (item: any) => item.isTrending === true;
-  const trending = useFetchFilter({ filterData: filterTrending });
+  const trending = useFetchFilter({ filterData: filterTrending, setIsLoading });
 
   return (
     <>
@@ -27,12 +30,18 @@ const Trending = () => {
         modules={[Autoplay]}
         className="mySwiper mb-10"
       >
-        {trending &&
-          trending.map((trend: any) => (
-            <SwiperSlide className="relative w-fit">
-              <TrendingCard key={trend.id} trend={trend} />
-            </SwiperSlide>
-          ))}
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <>
+            {trending &&
+              trending.map((trend: any) => (
+                <SwiperSlide className="relative w-fit">
+                  <TrendingCard key={trend.id} trend={trend} />
+                </SwiperSlide>
+              ))}
+          </>
+        )}
       </Swiper>
     </>
   );
