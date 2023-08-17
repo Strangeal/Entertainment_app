@@ -18,7 +18,7 @@
       "category": "Movie",
       "rating": "PG",
       "isTrending": true,
-      "isBookmarked": true
+      "isBookmarked": false
     },
     {
       "id": 2,
@@ -38,7 +38,7 @@
       "category": "Movie",
       "rating": "PG",
       "isTrending": true,
-      "isBookmarked": true
+      "isBookmarked": false
     },
     {
       "id": 3,
@@ -77,8 +77,8 @@
       "year": 2021,
       "category": "Movie",
       "rating": "18+",
-      "isBookmarked": false,
-      "isTrending": true
+      "isTrending": true,
+      "isBookmarked": false
     },
     {
       "id": 5,
@@ -97,8 +97,8 @@
       "year": 2018,
       "category": "TV Series",
       "rating": "PG",
-      "isBookmarked": true,
-      "isTrending": true
+      "isTrending": true,
+      "isBookmarked": false
     },
     {
       "id": 6,
@@ -113,8 +113,8 @@
       "year": 2019,
       "category": "Movie",
       "rating": "E",
-      "isBookmarked": false,
-      "isTrending": false
+      "isTrending": false,
+      "isBookmarked": false
     },
     {
       "id": 7,
@@ -193,8 +193,8 @@
       "year": 2016,
       "category": "TV Series",
       "rating": "18+",
-      "isBookmarked": false,
-      "isTrending": false
+      "isTrending": false,
+      "isBookmarked": false
     },
     {
       "id": 12,
@@ -241,8 +241,8 @@
       "year": 2015,
       "category": "TV Series",
       "rating": "E",
-      "isBookmarked": true,
-      "isTrending": false
+      "isTrending": false,
+      "isBookmarked": false
     },
     {
       "id": 15,
@@ -322,7 +322,7 @@
       "category": "Movie",
       "rating": "18+",
       "isTrending": false,
-      "isBookmarked": true
+      "isBookmarked": false
     },
     {
       "id": 20,
@@ -369,8 +369,8 @@
       "year": 2017,
       "category": "Movie",
       "rating": "E",
-      "isBookmarked": true,
-      "isTrending": false
+      "isTrending": false,
+      "isBookmarked": false
     },
     {
       "id": 23,
@@ -401,8 +401,8 @@
       "year": 2016,
       "category": "TV Series",
       "rating": "E",
-      "isBookmarked": true,
-      "isTrending": false
+      "isTrending": false,
+      "isBookmarked": false
     },
     {
       "id": 25,
@@ -449,8 +449,8 @@
       "year": 2017,
       "category": "Movie",
       "rating": "18+",
-      "isBookmarked": true,
-      "isTrending": false
+      "isTrending": false,
+      "isBookmarked": false
     },
     {
       "id": 28,
@@ -481,8 +481,8 @@
       "year": 2017,
       "category": "Movie",
       "rating": "PG",
-      "isBookmarked": true,
-      "isTrending": false
+      "isTrending": false,
+      "isBookmarked": false
     }
   ]
 }
