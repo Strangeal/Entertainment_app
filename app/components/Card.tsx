@@ -4,38 +4,40 @@ import axios from "axios";
 import BookmarkBtn from "./BookmarkBtn";
 import Link from "next/link";
 import PlayBtn from "./PlayBtn";
-import useFetchFilter from "./fetch & filters/useFetchFilter";
 
 type DataProps = {
   movie: any;
   searchQuery: string;
+  allMovies: MovieProps[] | null;
+  setAllMovies: (item: MovieProps[] | null) => void;
 };
 
-const Card = ({ movie, searchQuery }: DataProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+const Card = ({ movie, searchQuery, allMovies, setAllMovies }: DataProps) => {
   const [movieBooked, setMovieBooked] = useState([]);
 
-  // const fetchData = async () => {
-  //   const allData = await FetchData("http://localhost:3001/data");
-  //   const filteredData = allData.filter((item: any) => item.id === movie.id);
-  //   if (filteredData.length > 0) {
-  //     setMovieId(filteredData[0]);
-  //   } else {
-  //     console.log("No data found");
-  //   }
-  // };
-
-  const filterMovieId = (item: any) => item.id === movie.id;
-  const movieId = useFetchFilter({ filterData: filterMovieId, setIsLoading });
+  const fetchAllData = async () => {
+    try {
+      const movieUrl = "http://localhost:3001/data";
+      const allData = await axios.get(movieUrl);
+      setAllMovies(allData.data);
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const handleClick = async () => {
-    if (movieId.length > 0) {
-      const { isBookmarked, ...movieData } = movieId[0];
+    const filterClick = allMovies?.find(
+      (item: MovieProps) => item.id === movie.id
+    );
+    console.log("Clicked:", filterClick);
+
+    if (filterClick) {
+      const { isBookmarked, ...movieData } = filterClick;
       const updateMovie = { ...movieData, isBookmarked: !isBookmarked };
 
       try {
         const response = await axios.put(
-          `http://localhost:3001/data/${movieId[0].id}`,
+          `http://localhost:3001/data/${filterClick.id}`,
           updateMovie,
           {
             headers: {
@@ -47,9 +49,10 @@ const Card = ({ movie, searchQuery }: DataProps) => {
           ...prev,
           isBookmarked: response.data.isBookmarked,
         }));
-        console.log("Update Success:", response.data);
+
+        fetchAllData();
       } catch (error) {
-        console.log("Error updating movie:", error);
+        console.log(error);
       }
     }
   };
