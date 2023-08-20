@@ -1,0 +1,14 @@
+.input_body {
+  @apply flex justify-center items-center relative my-6;
+}
+
+.input_field {
+  @apply w-full text-prime-gray text-sm border-x-0 border-b border-prime-gray pb-3 pl-5 bg-transparent appearance-none outline-none focus:border-white focus:text-white autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,0)]; 
+}
+
+.input_error {
+  @apply text-prime-orange text-xs absolute top-0 right-0;
+}
+.submit_btn {
+  @apply text-sm bg-prime-orange text-white w-full p-3 font-light rounded-md my-5 transition-all duration-300 hover:bg-white hover:text-prime-black;
+}
