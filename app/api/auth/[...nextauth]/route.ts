@@ -2,10 +2,16 @@ import { prisma } from "@/lib/prima";
 import { compare } from "bcrypt";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
+import DiscordProvider from "next-auth/providers/discord";
 
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+  },
+  pages: {
+    signIn: "/signin",
   },
   providers: [
     CredentialsProvider({
@@ -53,9 +59,19 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
-    // GoogleProvider({}),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
+    }),
+    DiscordProvider({
+      clientId: process.env.DISCORD_ID as string,
+      clientSecret: process.env.DISCORD_SECRET as string,
+    }),
   ],
-
   callbacks: {
     session: async ({ session, token }) => {
       console.log("Session Callback:", { session, token });
