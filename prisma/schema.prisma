@@ -11,8 +11,62 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
-  email     String @unique
-  full_name String
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String
   password  String
+  bookmarks Bookmark[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
+
+model Media {
+  id             String     @id @default(uuid())
+  title          String
+  overview       String
+  trendingPoster String
+  originalPoster String
+  year           Int
+  category       String
+  rating         String
+  isTrending     Boolean    @default(false)
+  bookmarks      Bookmark[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model Bookmark {
+  id           String   @id @default(uuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  media        Media    @relation(fields: [mediaId], references: [id])
+  mediaId      String
+  isBookmarked Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// model Thumbnail {
+//   id       String     @id @default(uuid())
+//   media    Media      @relation(fields: [mediaId], references: [id])
+//   mediaId  String
+//   trending Trending[]
+//   regular  Regular[]
+// }
+
+// model Trending {
+//   id          String    @id @default(uuid())
+//   small       String
+//   large       String
+//   thumbnail   Thumbnail @relation(fields: [thumbnailId], references: [id])
+//   thumbnailId String
+// }
+
+// model Regular {
+//   id          String    @id @default(uuid())
+//   small       String
+//   medium      String
+//   large       String
+//   thumbnailId String
+//   Thumbnail   Thumbnail @relation(fields: [thumbnailId], references: [id])
+// }
