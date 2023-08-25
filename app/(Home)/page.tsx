@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import FetchData from "../components/fetch & filters/FetchData";
 import Search from "../components/Search";
 import Card from "../components/Card";
 import Trending from "../components/trending/Trending";
@@ -15,7 +14,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchAllData = async () => {
-      const movieUrl = "http://localhost:3001/data";
+      const movieUrl = "/api/media";
       const allData = await axios.get(movieUrl);
       setAllMovies(allData.data);
     };
