@@ -1,35 +1,45 @@
 "use client";
 import Card from "@/app/components/Card";
-import FetchData from "@/app/components/fetch & filters/FetchData";
 import Search from "@/app/components/Search";
 import SearchFilter from "@/app/components/fetch & filters/SearchFiter";
 import React, { useEffect, useState } from "react";
 import Spinner from "@/app/components/Spinner";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const Bookmarks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
   const [allMovies, setAllMovies] = useState<MovieProps[] | null>(null);
+  const { data: session } = useSession();
 
+  let dataArray: any = [];
   useEffect(() => {
     const fetchAllData = async () => {
-      const movieUrl = "http://localhost:3001/data";
-      const allData = await axios.get(movieUrl);
-      setAllMovies(allData.data);
+      if (session?.user) {
+        const movieUrl = `api/bookmarks/${session?.user?.id}`;
+        try {
+          const allData = await axios.get(movieUrl);
+          if (Array.isArray(allData.data)) {
+            dataArray = allData.data.map((item: BookmarkProps) => item.media);
+            setAllMovies(dataArray);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
     };
     fetchAllData();
   }, []);
 
   const MovieBookmarkData = allMovies?.filter(
-    (item: any) => item.isBookmarked === true && item.category === "Movie"
+    (item: MovieProps) => item.category === "Movie"
   );
   const seriesBookmarkData = allMovies?.filter(
-    (item: any) => item.isBookmarked === true && item.category === "TV Series"
+    (item: MovieProps) => item.category === "TV Series"
   );
 
-  const handleSearch = (searchResult: any) => {
+  const handleSearch = (searchResult: string) => {
     setSearchQuery(searchResult);
   };
 
@@ -56,14 +66,8 @@ const Bookmarks = () => {
               : `Found ${filteredMoviesSearch?.length} results for '${searchQuery}' in Movies`}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredMoviesSearch?.map((movie: any) => (
-              <Card
-                key={movie.id}
-                movie={movie}
-                searchQuery={searchQuery}
-                allMovies={allMovies}
-                setAllMovies={setAllMovies}
-              />
+            {filteredMoviesSearch?.map((movie: MovieProps) => (
+              <Card key={movie.id} movie={movie} searchQuery={searchQuery} />
             ))}
           </div>
           <h2 className="text-3xl font-light mt-10 mb-5">
@@ -74,14 +78,8 @@ const Bookmarks = () => {
               : `Found ${filteredSeriesSearch?.length} results for '${searchQuery}' in TV Series`}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredSeriesSearch?.map((movie: any) => (
-              <Card
-                key={movie.id}
-                movie={movie}
-                searchQuery={searchQuery}
-                allMovies={allMovies}
-                setAllMovies={setAllMovies}
-              />
+            {filteredSeriesSearch?.map((movie: MovieProps) => (
+              <Card key={movie.id} movie={movie} searchQuery={searchQuery} />
             ))}
           </div>
         </>
