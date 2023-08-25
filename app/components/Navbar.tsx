@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <nav className="flex items-center justify-between gap-5 p-5 sm:gap-7 sm:p-7 lg:flex-col">

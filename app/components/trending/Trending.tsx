@@ -4,7 +4,6 @@ import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { useEffect, useState } from "react";
 import Spinner from "../Spinner";
-import axios from "axios";
 import FetchData from "../fetch & filters/FetchData";
 
 const Trending = () => {
@@ -13,7 +12,7 @@ const Trending = () => {
 
   useEffect(() => {
     const fetchAllData = async () => {
-      const movieUrl = "http://localhost:3001/data";
+      const movieUrl = "api/media";
       const allData = await FetchData(movieUrl, setIsLoading);
       setAllMovies(allData);
     };
@@ -47,7 +46,7 @@ const Trending = () => {
         ) : (
           <>
             {trending &&
-              trending.map((trend: any) => (
+              trending.map((trend: MovieProps) => (
                 <SwiperSlide className="relative w-fit">
                   <TrendingCard key={trend.id} trend={trend} />
                 </SwiperSlide>

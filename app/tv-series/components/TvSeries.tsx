@@ -6,9 +6,7 @@ import SearchFilter from "@/app/components/fetch & filters/SearchFiter";
 import Spinner from "@/app/components/Spinner";
 import axios from "axios";
 
-type Props = {};
-
-const TvSeries = (props: Props) => {
+const TvSeries = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -24,7 +22,7 @@ const TvSeries = (props: Props) => {
   }, []);
 
   const filterCategory = allMovies?.filter(
-    (item: any) => item.category === "TV Series"
+    (item: MovieProps) => item.category === "TV Series"
   );
   const handleSearch = (searchResult: any) => {
     setSearchQuery(searchResult);
@@ -50,13 +48,11 @@ const TvSeries = (props: Props) => {
           {filteredSearch?.length === 0 ? null : (
             <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
               {filterCategory &&
-                filterCategory.map((series: any) => (
+                filterCategory.map((series: MovieProps) => (
                   <Card
                     key={series.id}
                     movie={series}
                     searchQuery={searchQuery}
-                    allMovies={allMovies}
-                    setAllMovies={setAllMovies}
                   />
                 ))}
             </div>

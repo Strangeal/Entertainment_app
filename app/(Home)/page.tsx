@@ -50,8 +50,8 @@ export default function Home() {
                   key={movie.id}
                   movie={movie}
                   searchQuery={searchQuery}
-                  allMovies={allMovies}
-                  setAllMovies={setAllMovies}
+                  // allMovies={allMovies}
+                  // setAllMovies={setAllMovies}
                 />
               ))}
             </div>
