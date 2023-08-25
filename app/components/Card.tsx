@@ -1,59 +1,75 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import BookmarkBtn from "./BookmarkBtn";
 import Link from "next/link";
 import PlayBtn from "./PlayBtn";
+import { useSession } from "next-auth/react";
 
 type DataProps = {
-  movie: any;
+  movie: MovieProps;
   searchQuery: string;
-  allMovies: MovieProps[] | null;
-  setAllMovies: (item: MovieProps[] | null) => void;
 };
 
-const Card = ({ movie, searchQuery, allMovies, setAllMovies }: DataProps) => {
-  const [movieBooked, setMovieBooked] = useState([]);
+const Card = ({ movie, searchQuery }: DataProps) => {
+  const { data: session } = useSession();
+  const [bookmarkId, setBookmarkId] = useState<string | null>(null);
+  const [bookmarkStatus, setBookmarkStatus] = useState<boolean>(false);
 
   const fetchAllData = async () => {
-    try {
-      const movieUrl = "http://localhost:3001/data";
-      const allData = await axios.get(movieUrl);
-      setAllMovies(allData.data);
-    } catch (error) {
-      throw error;
+    if (session?.user) {
+      const movieUrl = `/api/bookmarks/${session?.user?.id}`;
+      try {
+        const allData = await axios.get(movieUrl);
+        if (Array.isArray(allData.data)) {
+          const bookmarkForMedia = allData.data.find(
+            (item: BookmarkProps) => item.mediaId === movie.id
+          );
+          setBookmarkId(bookmarkForMedia?.id || null);
+          setBookmarkStatus(bookmarkForMedia?.isBookmarked || false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
+  useEffect(() => {
+    fetchAllData();
+  }, []);
+
   const handleClick = async () => {
-    const filterClick = allMovies?.find(
-      (item: MovieProps) => item.id === movie.id
-    );
-    console.log("Clicked:", filterClick);
-
-    if (filterClick) {
-      const { isBookmarked, ...movieData } = filterClick;
-      const updateMovie = { ...movieData, isBookmarked: !isBookmarked };
-
-      try {
-        const response = await axios.put(
-          `http://localhost:3001/data/${filterClick.id}`,
-          updateMovie,
+    if (!session?.user) {
+      console.log("You're not authorized");
+    }
+    try {
+      if (bookmarkStatus) {
+        await axios.delete(`api/bookmarks/${bookmarkId}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setBookmarkStatus(false);
+        fetchAllData();
+      } else {
+        await axios.post(
+          `api/bookmarks`,
+          {
+            userId: session?.user?.id,
+            mediaId: movie.id,
+            isBookmarked: true,
+          },
           {
             headers: {
               "Content-Type": "application/json",
             },
           }
         );
-        setMovieBooked((prev) => ({
-          ...prev,
-          isBookmarked: response.data.isBookmarked,
-        }));
-
+        setBookmarkStatus(true);
         fetchAllData();
-      } catch (error) {
-        console.log(error);
       }
+    } catch (error) {
+      console.log("Please sign in");
     }
   };
 
@@ -65,11 +81,14 @@ const Card = ({ movie, searchQuery, allMovies, setAllMovies }: DataProps) => {
           <div className="relative">
             <img
               className="rounded-lg"
-              src={movie.thumbnail?.regular.large}
+              src={movie.originalPoster}
               alt={movie.title}
             />
             <div className="group w-full h-full absolute top-0 hover:block">
-              <BookmarkBtn movie={movie} handleClick={handleClick} />
+              <BookmarkBtn
+                bookmarkStatus={bookmarkStatus}
+                handleClick={handleClick}
+              />
               <PlayBtn />
             </div>
           </div>
