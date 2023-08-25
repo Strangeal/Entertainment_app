@@ -9,7 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 type RegisterProps = {
-  full_name: string;
+  name: string;
   email: string;
   password: string;
 };
@@ -58,12 +58,12 @@ const page = () => {
             <input
               className="input_field inset-y-0 autofill:bg-prime-dark"
               type="text"
-              placeholder="Full Name"
-              {...register("full_name", {
+              placeholder="Name"
+              {...register("name", {
                 required: "Name can't be empty",
               })}
             />
-            <span className="input_error">{errors.full_name?.message}</span>
+            <span className="input_error">{errors.name?.message}</span>
           </div>
           <div className="input_body">
             <input
