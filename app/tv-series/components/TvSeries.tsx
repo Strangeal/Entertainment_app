@@ -16,7 +16,7 @@ const TvSeries = (props: Props) => {
 
   useEffect(() => {
     const fetchAllData = async () => {
-      const movieUrl = "http://localhost:3001/data";
+      const movieUrl = "/api/media";
       const allData = await axios.get(movieUrl);
       setAllMovies(allData.data);
     };
@@ -26,8 +26,6 @@ const TvSeries = (props: Props) => {
   const filterCategory = allMovies?.filter(
     (item: any) => item.category === "TV Series"
   );
-  // const series = useFetchFilter({ filterData: filterCategory, setIsLoading });
-
   const handleSearch = (searchResult: any) => {
     setSearchQuery(searchResult);
   };

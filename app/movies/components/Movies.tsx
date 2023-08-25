@@ -13,7 +13,7 @@ const Movies = () => {
 
   useEffect(() => {
     const fetchAllData = async () => {
-      const movieUrl = "http://localhost:3001/data";
+      const movieUrl = "api/media";
       const allData = await FetchData(movieUrl, setIsLoading);
       setAllMovies(allData);
     };
