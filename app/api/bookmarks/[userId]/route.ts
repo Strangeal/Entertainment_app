@@ -23,8 +23,6 @@ export async function GET(
   return NextResponse.json(bookmark);
 }
 
-// update
-
 // Delete
 
 export async function DELETE(
