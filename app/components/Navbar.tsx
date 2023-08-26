@@ -1,11 +1,14 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { usePathname } from "next/navigation";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const [toggle, setToggle] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <nav className="flex items-center justify-between gap-5 p-5 sm:gap-7 sm:p-7 lg:flex-col">
@@ -88,16 +91,65 @@ const Navbar = () => {
           </Link>
         </li>
       </ul>
-      <Link href="/">
-        <Image
-          className="border-2 rounded-full"
-          src="/assets/image-avatar.png"
-          width={25}
-          height={25}
-          alt="home"
-        />
-      </Link>
-      {/* </div> */}
+      <div>
+        {session?.user ? (
+          <>
+            <Image
+              className="border-2 rounded-full"
+              src="/assets/image-avatar.png"
+              width={25}
+              height={25}
+              alt="home"
+              onClick={() => setToggle((prev) => !prev)}
+            />
+          </>
+        ) : (
+          <svg
+            onClick={() => setToggle((prev) => !prev)}
+            className="text-white fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            height="23px"
+            viewBox="0 0 512 512"
+          >
+            <path d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
+          </svg>
+        )}
+
+        {toggle && (
+          <div className="absolute right-0 top-[4.6rem] z-50 my-4 text-base rounded-lg shadow bg-prime-dark lg:left-5 lg:top-72 lg:w-fit">
+            <div className="px-4 py-3 border-b border-prime-gray">
+              <span className="block text-sm text-gray-900 dark:text-white">
+                {session?.user?.name ? session?.user?.name : "Guest"}
+              </span>
+              <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                {session?.user?.email
+                  ? session?.user?.email
+                  : "guest@example.com"}
+              </span>
+            </div>
+
+            <Link
+              href="/"
+              className="block px-4 py-2 text-sm hover:bg-prime-gray hover:text-white"
+              onClick={() => setToggle(false)}
+            >
+              {session?.user ? "Profile" : "Sign in"}
+            </Link>
+
+            <button
+              onClick={() => {
+                setToggle(false);
+                {
+                  session?.user ? signOut() : signIn();
+                }
+              }}
+              className="block text-left w-full px-4 py-2 text-sm hover:bg-prime-gray hover:text-white"
+            >
+              {session?.user ? "Sign out" : "Sign in"}
+            </button>
+          </div>
+        )}
+      </div>
     </nav>
   );
 };
