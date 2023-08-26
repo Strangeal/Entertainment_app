@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user.id + "",
           email: user.email,
-          full_name: user.full_name,
+          name: user.name,
         };
       },
     }),
@@ -75,13 +75,33 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     session: async ({ session, token }) => {
       console.log("Session Callback:", { session, token });
+
+      // check if oauth user exist
+      const userEmail = token.email as string;
+      const user = await prisma.user.findUnique({
+        where: { email: userEmail },
+      });
+      // if user doesn't exist, save Oauth user data
+      const userId = token.sub;
+      if (!user) {
+        await prisma.user.create({
+          data: {
+            id: userId,
+            email: token.email as string,
+            name: token.name as string,
+            password: "password",
+          },
+        });
+      }
+
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
           email: token.email,
-          full_name: token.full_name,
+          name: token.name,
+          password: token.password,
         },
       };
     },
@@ -93,7 +113,7 @@ export const authOptions: NextAuthOptions = {
           ...token,
           id: u.id,
           email: u.email,
-          name: u.full_name,
+          name: u.name,
         };
       }
       return token;
