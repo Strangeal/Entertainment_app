@@ -6,6 +6,9 @@ import React, { useEffect, useState } from "react";
 import Spinner from "@/app/components/Spinner";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
+import FetchData from "@/app/components/fetch & filters/FetchData";
+import NoSessionView from "@/app/(Auth)/component/NoSessionView";
 
 const Bookmarks = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,13 +18,15 @@ const Bookmarks = () => {
 
   let dataArray: any = [];
   useEffect(() => {
+    if (!session?.user) return;
+
     const fetchAllData = async () => {
       if (session?.user) {
         const movieUrl = `api/bookmarks/${session?.user?.id}`;
         try {
-          const allData = await axios.get(movieUrl);
-          if (Array.isArray(allData.data)) {
-            dataArray = allData.data.map((item: BookmarkProps) => item.media);
+          const allData = await FetchData(movieUrl, setIsLoading);
+          if (Array.isArray(allData)) {
+            dataArray = allData.map((item: BookmarkProps) => item.media);
             setAllMovies(dataArray);
           }
         } catch (error) {
@@ -30,7 +35,9 @@ const Bookmarks = () => {
       }
     };
     fetchAllData();
-  }, []);
+  }, [session]);
+
+  if (!session?.user) return <NoSessionView />;
 
   const MovieBookmarkData = allMovies?.filter(
     (item: MovieProps) => item.category === "Movie"
@@ -61,7 +68,9 @@ const Bookmarks = () => {
       ) : (
         <>
           <h2 className="text-3xl font-light my-5">
-            {filteredMoviesSearch?.length === MovieBookmarkData?.length
+            {filteredMoviesSearch?.length === 0
+              ? "No series found"
+              : filteredMoviesSearch?.length === MovieBookmarkData?.length
               ? "Bookmarked Movies"
               : `Found ${filteredMoviesSearch?.length} results for '${searchQuery}' in Movies`}
           </h2>
