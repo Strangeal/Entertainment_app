@@ -9,6 +9,7 @@ import FetchData from "../fetch & filters/FetchData";
 const Trending = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [allMovies, setAllMovies] = useState<MovieProps[] | null>(null);
+  const [bookmarkStatus, setBookmarkStatus] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -18,6 +19,7 @@ const Trending = () => {
     };
     fetchAllData();
   }, []);
+
   const trending = allMovies?.filter(
     (item: MovieProps) => item.isTrending === true
   );
@@ -48,7 +50,11 @@ const Trending = () => {
             {trending &&
               trending.map((trend: MovieProps) => (
                 <SwiperSlide className="relative w-fit">
-                  <TrendingCard key={trend.id} trend={trend} />
+                  <TrendingCard
+                    key={trend.id}
+                    trend={trend}
+                    bookmarkStatus={bookmarkStatus}
+                  />
                 </SwiperSlide>
               ))}
           </>

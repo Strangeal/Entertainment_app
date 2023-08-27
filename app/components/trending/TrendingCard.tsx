@@ -5,10 +5,11 @@ import Link from "next/link";
 import PlayBtn from "../PlayBtn";
 
 type PredingMoviesProps = {
-  trend: any;
+  trend: MovieProps;
+  bookmarkStatus: boolean;
 };
 
-const TrendingCard = ({ trend }: PredingMoviesProps) => {
+const TrendingCard = ({ trend, bookmarkStatus }: PredingMoviesProps) => {
   const handleClick = () => {
     console.log("clicked");
   };
@@ -16,11 +17,16 @@ const TrendingCard = ({ trend }: PredingMoviesProps) => {
     <>
       <img
         className="rounded-lg bg-opacity-50"
-        src={trend.thumbnail.regular.large}
+        src={trend.trendingPoster}
         alt={trend.title}
       />
+
       <div className="group w-full h-full  absolute bottom-0 hover:block">
-        <BookmarkBtn movie={trend} handleClick={handleClick} />
+        <BookmarkBtn
+          bookmarkStatus={bookmarkStatus}
+          handleClick={handleClick}
+        />{" "}
+        {/* Check props */}
         <div className="absolute bottom-5 left-4 z-10">
           <ul className="my-2 text-xs font-medium text-white/60 flex items-center gap-2">
             <li>{trend.year}</li>
