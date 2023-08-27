@@ -1,11 +1,11 @@
 type FilterProps = {
-  filterData: any;
+  filterData: MovieProps[] | null;
   searchQuery: string;
 };
 
 const SearchFilter = ({ filterData, searchQuery }: FilterProps) => {
-  return filterData.filter(
-    (movie: any) =>
+  return filterData?.filter(
+    (movie: MovieProps) =>
       !searchQuery ||
       movie.title.toLowerCase().includes(searchQuery.toLowerCase())
   );

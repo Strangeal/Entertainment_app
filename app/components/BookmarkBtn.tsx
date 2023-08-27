@@ -1,12 +1,12 @@
 type BtnProps = {
-  movie: any;
   handleClick: () => void;
+  bookmarkStatus: boolean;
 };
 
-const BookmarkBtn = ({ movie, handleClick }: BtnProps) => {
+const BookmarkBtn = ({ bookmarkStatus, handleClick }: BtnProps) => {
   return (
     <div>
-      {movie.isBookmarked ? (
+      {bookmarkStatus ? (
         <button
           onClick={handleClick}
           className="bg-prime-dark opacity-60 p-2.5 rounded-full absolute top-0 right-0 m-3 z-10 hover:bg-white hover:opacity-100 hover:text-black fill-current"
@@ -32,7 +32,7 @@ const BookmarkBtn = ({ movie, handleClick }: BtnProps) => {
             <path
               d="m10.518.75.399 12.214-5.084-4.24-4.535 4.426L.75 1.036l9.768-.285Z"
               stroke="currentColor"
-              stroke-width="1.5"
+              strokeWidth="1.5"
             />
           </svg>
         </button>
