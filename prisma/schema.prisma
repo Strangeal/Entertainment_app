@@ -39,34 +39,9 @@ model Bookmark {
   id           String   @id @default(uuid())
   user         User     @relation(fields: [userId], references: [id])
   userId       String
-  media        Media    @relation(fields: [mediaId], references: [id])
+  media        Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
   mediaId      String
   isBookmarked Boolean  @default(false)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
-
-// model Thumbnail {
-//   id       String     @id @default(uuid())
-//   media    Media      @relation(fields: [mediaId], references: [id])
-//   mediaId  String
-//   trending Trending[]
-//   regular  Regular[]
-// }
-
-// model Trending {
-//   id          String    @id @default(uuid())
-//   small       String
-//   large       String
-//   thumbnail   Thumbnail @relation(fields: [thumbnailId], references: [id])
-//   thumbnailId String
-// }
-
-// model Regular {
-//   id          String    @id @default(uuid())
-//   small       String
-//   medium      String
-//   large       String
-//   thumbnailId String
-//   Thumbnail   Thumbnail @relation(fields: [thumbnailId], references: [id])
-// }
