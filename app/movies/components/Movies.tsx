@@ -48,13 +48,7 @@ const Movies = () => {
           {filteredSearch?.length === 0 ? null : (
             <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
               {filteredSearch?.map((movie: any) => (
-                <Card
-                  key={movie.id}
-                  movie={movie}
-                  searchQuery={searchQuery}
-                  allMovies={allMovies}
-                  setAllMovies={setAllMovies}
-                />
+                <Card key={movie.id} movie={movie} searchQuery={searchQuery} />
               ))}
             </div>
           )}
