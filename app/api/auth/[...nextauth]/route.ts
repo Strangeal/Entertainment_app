@@ -74,8 +74,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     session: async ({ session, token }) => {
-      console.log("Session Callback:", { session, token });
-
       // check if oauth user exist
       const userEmail = token.email as string;
       const user = await prisma.user.findUnique({
@@ -106,7 +104,6 @@ export const authOptions: NextAuthOptions = {
       };
     },
     jwt: async ({ token, user }) => {
-      console.log("JWT Callback:", { token, user });
       if (user) {
         const u = user as unknown as any;
         return {
