@@ -64,6 +64,7 @@ const page = () => {
           className="bg-prime-dark"
           onSubmit={handleSubmit(onSubmit)}
           noValidate
+          autoComplete="off"
         >
           <div className="input_body">
             <input

@@ -3,7 +3,7 @@
 }
 
 .input_field {
-  @apply w-full text-prime-gray text-sm border-x-0 border-b border-prime-gray pb-3 pl-5 bg-transparent appearance-none outline-none focus:border-white focus:text-white autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,0)]; 
+  @apply w-full text-white text-sm border-x-0 border-b border-prime-gray pb-3 pl-5 bg-transparent appearance-none outline-none focus:border-white focus:text-white autofill:shadow-transparent; 
 }
 
 .input_error {

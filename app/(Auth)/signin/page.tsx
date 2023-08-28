@@ -55,7 +55,12 @@ const SignIn = () => {
       <div className="bg-prime-dark py-10 px-8 rounded-2xl">
         <h2 className="text-white text-3xl/3 font-light mb-12">Login</h2>
 
-        <form className="bg-prime-dark" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="bg-prime-dark"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          autoComplete="off"
+        >
           <div className="input_body">
             <input
               className="input_field inset-y-0 autofill:bg-prime-dark"
