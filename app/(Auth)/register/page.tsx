@@ -5,8 +5,8 @@ import React from "react";
 import "../styles/auth.css";
 import OauthBtn from "../component/OauthBtn";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 type RegisterProps = {
   name: string;
@@ -36,8 +36,15 @@ const page = () => {
           "Content-Type": "application/json",
         },
       });
+      console.log("sign up res", res);
+
       if (res.ok) {
         router.push("/signin");
+        toast.success("Your account has been created successfully", {
+          icon: "✅🚀😊",
+        });
+      } else {
+        toast.error("Oops! Something went wrong", { icon: "😥❌" });
       }
     } catch (error) {
       console.log(error);
@@ -53,7 +60,11 @@ const page = () => {
       <div className="bg-prime-dark py-10 px-8 rounded-2xl">
         <h2 className="text-white text-3xl mb-5 font-light">Sign Up</h2>
 
-        <form className="bg-prime-dark" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="bg-prime-dark"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
           <div className="input_body">
             <input
               className="input_field inset-y-0 autofill:bg-prime-dark"
@@ -71,7 +82,11 @@ const page = () => {
               type="email"
               placeholder="Email"
               {...register("email", {
-                required: "Email can't be empty",
+                pattern: {
+                  value:
+                    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                  message: "Invalid email format",
+                },
               })}
             />
             <span className="input_error">{errors.email?.message}</span>
@@ -83,7 +98,10 @@ const page = () => {
               type="password"
               placeholder="Password"
               {...register("password", {
-                required: "Password can't be empty",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
               })}
             />
             <span className="input_error">{errors.password?.message}</span>

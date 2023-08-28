@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import "../styles/auth.css";
 import OauthBtn from "../component/OauthBtn";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 type SignInProps = {
   email: string;
@@ -15,17 +16,34 @@ type SignInProps = {
 
 const SignIn = () => {
   const searchParam = useSearchParams();
+  const router = useRouter();
   const form = useForm<SignInProps>();
-
+  const [hasError, setHasError] = useState("");
   const callbackUrl = searchParam.get("callbackUrl") || "/";
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = form;
 
-  const onSubmit = (data: SignInProps) => {
-    signIn("credentials", { ...data, callbackUrl });
+  const onSubmit = async (data: SignInProps) => {
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        ...data,
+        callbackUrl,
+      });
+      console.log("res", res);
+      if (!res?.error) {
+        router.push(callbackUrl);
+        toast.error(`Hello, ${data.email}, welcome back!`, { icon: "👋" });
+      } else {
+        toast.error("Invalid email and password", { icon: "❌" });
+      }
+    } catch (error) {
+      setHasError(error as string);
+    }
   };
 
   return (

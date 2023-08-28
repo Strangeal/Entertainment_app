@@ -5,6 +5,7 @@ import BookmarkBtn from "./BookmarkBtn";
 import Link from "next/link";
 import PlayBtn from "./PlayBtn";
 import { useSession } from "next-auth/react";
+import { toast } from "react-hot-toast";
 
 type DataProps = {
   movie: MovieProps;
@@ -41,6 +42,9 @@ const Card = ({ movie, searchQuery }: DataProps) => {
   const handleClick = async () => {
     if (!session?.user) {
       console.log("You're not authorized");
+      toast.success("You're not authorized. Please sign in first", {
+        icon: "🚫",
+      });
     }
     try {
       if (bookmarkStatus) {
@@ -50,6 +54,7 @@ const Card = ({ movie, searchQuery }: DataProps) => {
           },
         });
         setBookmarkStatus(false);
+        toast.success("Removed from bookmarks", { icon: "✅" });
         fetchAllData();
       } else {
         await axios.post(
@@ -66,6 +71,7 @@ const Card = ({ movie, searchQuery }: DataProps) => {
           }
         );
         setBookmarkStatus(true);
+        toast.success("Added to bookmarks", { icon: "✅" });
         fetchAllData();
       }
     } catch (error) {
